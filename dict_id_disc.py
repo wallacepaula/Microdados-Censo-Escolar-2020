@@ -4,9 +4,12 @@ Created on Wed Jan  5 11:45:25 2022
 
 @author: walla
 """
+
+# Import libraries
 import pandas as pd
 import numpy as np
 
+# Assign columns names
 col_names = ['ID_TURMA', 'IN_DISC_LINGUA_PORTUGUESA',
              'IN_DISC_EDUCACAO_FISICA', 'IN_DISC_ARTES', 'IN_DISC_LINGUA_INGLES',
              'IN_DISC_LINGUA_ESPANHOL', 'IN_DISC_LINGUA_FRANCES', 'IN_DISC_LINGUA_OUTRA',
@@ -29,12 +32,15 @@ classes = pd.read_csv('C:/Users/walla/Desktop/microdados_censo_escolar_2020/DADO
 # Load dictionary of TP_ETAPA_ENSINO
 dict_disc = np.load('C:/Users/walla/Desktop/microdados_censo_escolar_2020/dict_disc.npy', allow_pickle=True).item()
 
+# Create function columns_to_dict
 def columns_to_dict(school_class):
+  
     # Drop disciplines with values 0 or nan
     for key, value in school_class.items():
         if value == 0:
             school_class[key] = np.nan
     
+    # If the number of the columns is 27, then the class has no discipline assigned 
     if school_class.isna().sum() == 27:
         dict_class = {int(school_class[0]):''}
     else:
@@ -67,5 +73,4 @@ for i in range(len(classes)):
     dict_total[list(dict_aux.keys())[0]] = dict_aux[list(dict_aux.keys())[0]]
 
 # Save
-np.save('C:/Users/walla/Desktop/microdados_censo_escolar_2020/dict_disc_total.npy', 
-        dict_total) 
+np.save('dict_disc_total.npy', dict_total) 
