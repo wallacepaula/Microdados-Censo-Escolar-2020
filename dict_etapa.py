@@ -5,8 +5,10 @@ Created on Mon Jan  3 18:25:47 2022
 @author: walla
 """
 
+# Import libraries
 import numpy as np
 
+# Create a dictionary of categories in csv file and the corresponding meaning
 d = {
     1:'Educação Infantil - Creche',
     2: 'Educação Infantil - Pré-escola',
@@ -62,5 +64,5 @@ d = {
     74: 'Curso Técnico Integrado na Modalidade EJA (EJA integrada à Educação Profissional de Nível Médio)'
    }
 
-# Save
-np.save('C:/Users/walla/Desktop/microdados_censo_escolar_2020/dict_etapa.npy', d) 
+# Save dicitionary
+np.save('dict_etapa.npy', d) 
