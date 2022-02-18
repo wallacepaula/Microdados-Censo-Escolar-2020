@@ -5,7 +5,7 @@ Created on Mon Jan  3 20:50:06 2022
 @author: walla
 """
 
-# import libraries
+# Import libraries
 import pandas as pd
 import numpy as np
 from datetime import timedelta
@@ -15,25 +15,28 @@ col_names = ['NU_ANO_CENSO', 'NO_TURMA', 'TX_HR_INICIAL', 'TX_MI_INICIAL',
              'QT_MATRICULAS','CO_ENTIDADE', 'ID_TURMA']
 
 # Load csv file
-classes = pd.read_csv('C:/Users/walla/Desktop/microdados_censo_escolar_2020/DADOS/turmas.CSV',
+classes = pd.read_csv('DADOS/turmas.CSV',
                       encoding = 'unicode_escape',
                       sep='|',
                       usecols=col_names)
 
 # Load dictionary of TP_ETAPA_ENSINO
-dict_etapa = np.load('C:/Users/walla/Desktop/microdados_censo_escolar_2020/dict_etapa.npy', allow_pickle=True).item()
+dict_etapa = np.load('dict_etapa.npy', allow_pickle=True).item()
 
 # Load dictionary of 'ID_TURMA' and 'Disciplinas'
-dict_disc_total = np.load('C:/Users/walla/Desktop/microdados_censo_escolar_2020/dict_disc_total.npy', allow_pickle=True).item()
+dict_disc_total = np.load('dict_disc_total.npy', allow_pickle=True).item()
 
+# Define class Turmas
 class Turmas:
     
     def __init__(self, cod_inep):
         self.cod_inep = cod_inep
         self.school = classes[classes['CO_ENTIDADE']==self.cod_inep].dropna(subset=['TP_ETAPA_ENSINO'])
     
+    # Create function summary, which summarize general informations about the classes, such as Etapa do Ensino, Quantidade de Turmas and Quantidade de Alunos 
     def summary(self):
-        # Create a DataFrame to summarize general informations about the classes
+      
+        # Create a DataFrame
         table = pd.DataFrame(columns=['Etapa', 'Qt Turmas', 'Qt Alunos'])
         
         # Group By 'TP_ETAPA_ENSINO'
@@ -53,11 +56,14 @@ class Turmas:
         table.loc['Total', 'Qt Turmas'] = sum(table['Qt Turmas'])
         table.loc['Total', 'Qt Alunos'] = sum(table['Qt Alunos'][0:-1])
         
+        # Return DataFrame
         return table
     
+    # Create function table, which expands informations about the classes, such as Nome da Classe, Etapa de Ensino, Início das aulas, Término das aulas,
+    # Duração do dia escolar, Quantidade de Alunos e Disciplinas 
     def table(self):
         
-        # Create a DataFrame to summarize general informations about the classes
+        # Create a DataFrame
         table = pd.DataFrame(columns=['Nome', 'Etapa', 'Início', 'Término',
                                       'Duração', 'Qt Alunos', 'Disciplinas'])
     
@@ -86,6 +92,8 @@ class Turmas:
         # Create column 'Disciplinas'
         table.loc[:, 'Disciplinas'] = self.school['ID_TURMA'].map(dict_disc_total)
         
+        # Sort 
         table.sort_values(by=['Início', 'Etapa'], inplace=True)
         
+        # Return DataFrame
         return table
