@@ -5,8 +5,10 @@ Created on Wed Jan  5 11:59:57 2022
 @author: walla
 """
 
+# Import libraries
 import numpy as np
 
+# Dictionary transforming category in csv file into a more readable string
 d = {
     'ID_TURMA':'ID_TURMA',
     'IN_DISC_LINGUA_PORTUGUESA':'Português',
@@ -38,5 +40,5 @@ d = {
     'IN_DISC_OUTRAS': 'Outro'
     }
 
-# Save
-np.save('C:/Users/walla/Desktop/microdados_censo_escolar_2020/dict_disc.npy', d) 
+# Save dictionary
+np.save('dict_disc.npy', d) 
